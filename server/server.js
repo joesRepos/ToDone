@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-app.get("/api", (req, res) => {
+app.get("/api/get-current-tasks", (req, res) => {
     res.json({"tasks":["task1", "task2", "task3"]})
 })
 
