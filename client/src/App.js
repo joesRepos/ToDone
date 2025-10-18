@@ -21,12 +21,34 @@ function App() {
   function DisplayTasks() {
     let rows = [];
     for (let currentTask of currentTasksData) {
-      console.log(currentTask);
       rows.push(
-        <p key={currentTask}>{JSON.stringify(currentTask)}</p>
+        <div>
+          <p key={currentTask}>{JSON.stringify(currentTask)}</p>
+          <button type="button" id="button" onClick={() => CompleteTask(currentTask)}>Completed</button>
+        </div>
       )
+        
     }
     return rows;
+  }
+  
+  function CompleteTask(task) {
+    fetch("api/completed-task", {
+      method:'POST',
+      body: JSON.stringify({data: task}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data === "VALID") {
+        window.location.reload();
+      }
+      else {
+        console.log("error completing task.");
+      }
+    });
   }
 
   function DisplayPriorities() {
@@ -74,6 +96,10 @@ function App() {
     .then(data => {
       if (data === "VALID") {
         window.location.reload();
+      }
+
+      else {
+        console.log("Error saving new task.")
       }
     });
 
