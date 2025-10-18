@@ -23,7 +23,7 @@ function App() {
     for (let currentTask of currentTasksData) {
       console.log(currentTask);
       rows.push(
-        <div classname = "current-task">{currentTask}</div>
+        <p key={currentTask}>{JSON.stringify(currentTask)}</p>
       )
     }
     return rows;
@@ -83,6 +83,7 @@ function App() {
     <div classname ="task-page">
       <h1>To Do List</h1>
       <h2>Current Tasks</h2>
+      <DisplayTasks/>
       <h2>Add Task</h2>
       <NewTaskBox/>
       <button type="button" id="button" onClick={SaveNewTask}>Save</button>
