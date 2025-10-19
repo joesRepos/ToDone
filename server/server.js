@@ -1,5 +1,10 @@
+const { initDB } = require('./db.js');
+
 const express = require('express');
 const app = express();
+
+const PORT = 3000;
+
 app.use(express.json());
 
 app.get("/api/get-current-tasks", (req, res) => {
