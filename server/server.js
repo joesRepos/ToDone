@@ -3,30 +3,26 @@ const { initDB } = require('./db.js');
 const express = require('express');
 const app = express();
 
-const PORT = 3000;
-
 app.use(express.json());
 
 app.get("/api/get-current-tasks", async (req, res) => {
     console.log("Sending tasks.");
     const db = await initDB();
     const tasks = await db.all('SELECT * FROM tasks');
-    console.log(tasks);
-    res.json({"tasks":["task1", "task2", "task3"]})
+    res.json(tasks);
 });
 
 app.post("/api/save-new-task", async (req, res) => {
-    const data = req.body.data;
     const db = await initDB();
-    console.log("Task recieved: " + req.body.data);
-    await db.run('INSERT INTO tasks (task) VALUES (?)', [data]);
+    const { task, priority, due_date } = req.body;
+    await db.run('INSERT INTO tasks (task, priority, due_date) VALUES (?, ?, ?)', [task, priority,due_date]);
     res.json("VALID");
 });
 
-app.post("/api/completed-task", (req, res) => {
+app.post("/api/completed-task", async (req, res) => {
     const data = req.body.data;
-    
-    console.log("Task completed: " + req.body.data);
+     const db = await initDB();
+    await db.run("UPDATE tasks SET completed = 1 WHERE id = ?", [id]);
     res.json("VALID");
 });
 

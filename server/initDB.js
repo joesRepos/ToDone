@@ -16,6 +16,7 @@ const setup = async () => {
     CREATE TABLE IF NOT EXISTS tasks (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       task TEXT NOT NULL,
+      priority INTEGER DEFAULT 1,
       completed BOOLEAN DEFAULT 0,
       due_date TEXT
     );

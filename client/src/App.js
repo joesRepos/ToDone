@@ -14,7 +14,7 @@ function App() {
         })
         .then(response => response.json())
         .then(data => {
-            setCurrentTasksData(data.tasks);
+            setCurrentTasksData(data);
         })
   }, [])
 
@@ -23,8 +23,8 @@ function App() {
     for (let currentTask of currentTasksData) {
       rows.push(
         <div>
-          <p key={currentTask}>{JSON.stringify(currentTask)}</p>
-          <button type="button" id="button" onClick={() => CompleteTask(currentTask)}>Completed</button>
+          <p key={currentTask.id}>{JSON.stringify(currentTask.task)}</p>
+          <button type="button" id="button" onClick={() => CompleteTask(currentTask.id)}>Completed</button>
         </div>
       )
         
@@ -79,7 +79,8 @@ function App() {
 
   function SaveNewTask() {
     let newTaskData = [];
-    console.log("New Task Saved.")
+    console.log("New Task Saved.");
+
     newTaskData.push(document.getElementById("NewTask").value);
     newTaskData.push(document.getElementById("NewPriority").value);
     newTaskData.push(document.getElementById("NewDue").value);
@@ -87,7 +88,11 @@ function App() {
 
     fetch("api/save-new-task", {
       method:'POST',
-      body: JSON.stringify({data: newTaskData}),
+      body: JSON.stringify({
+        task: document.getElementById("NewTask").value,
+        priority: document.getElementById("NewPriority").value,
+        due_date: document.getElementById("NewDue").value
+      }),
       headers: {
         'Content-Type': 'application/json'
       }
