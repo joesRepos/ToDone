@@ -14,7 +14,9 @@ function App() {
         })
         .then(response => response.json())
         .then(data => {
-            setCurrentTasksData(data);
+            if (data !== "INVALID") {
+              setCurrentTasksData(data);
+            }
         })
   }, [])
 
@@ -24,6 +26,7 @@ function App() {
       rows.push(
         <div>
           <p key={currentTask.id}>{JSON.stringify(currentTask.task)}</p>
+          <p key={currentTask.id}>Priority: {JSON.stringify(currentTask.priority)}</p>
           <button type="button" id="button" onClick={() => CompleteTask(currentTask.id)}>Completed</button>
         </div>
       )
@@ -45,7 +48,7 @@ function App() {
       if (data === "VALID") {
         window.location.reload();
       }
-      else {
+      else if(data === "INVALID") {
         console.log("error completing task.");
       }
     });
@@ -103,7 +106,7 @@ function App() {
         window.location.reload();
       }
 
-      else {
+      else if (data === "INVALID") {
         console.log("Error saving new task.")
       }
     });

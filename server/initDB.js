@@ -6,7 +6,7 @@ const DB_FILE = './database.db';
 const setup = async () => {
   if (fs.existsSync(DB_FILE)) {
     fs.unlinkSync(DB_FILE);
-    console.log(" Old database deleted");
+    console.log("Old database deleted");
   }
 
   const db = await initDB();
