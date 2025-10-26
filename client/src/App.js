@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react'
 
 function App() { 
 
-  const [currentTasksData, setCurrentTasksData] = useState([{}])
+  const [currentTasksData, setCurrentTasksData] = useState([{}]);
+  const [completedTasksData, setCompletedTasksData] = useState([{}]);
   const MAX_PRIORITY = 5;
 
   useEffect(() => {
@@ -20,7 +21,22 @@ function App() {
         })
   }, [])
 
-  function DisplayTasks() {
+    useEffect(() => {
+    fetch("/api/get-completed-tasks", {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data !== "INVALID") {
+              setCompletedTasksData(data);
+            }
+        })
+  }, [])
+
+  function DisplayCurrentTasks() {
     let rows = [];
     for (let currentTask of currentTasksData) {
       rows.push(
@@ -28,6 +44,19 @@ function App() {
           <p key={currentTask.id}>{JSON.stringify(currentTask.task)}</p>
           <p key={currentTask.id}>Priority: {JSON.stringify(currentTask.priority)}</p>
           <button type="button" id="button" onClick={() => CompleteTask(currentTask.id)}>Completed</button>
+        </div>
+      )
+        
+    }
+    return rows;
+  }
+
+    function DisplayCompletedTasks() {
+    let rows = [];
+    for (let completedTask of completedTasksData) {
+      rows.push(
+        <div>
+          <p key={completedTask.id}>{JSON.stringify(completedTask.task)}</p>
         </div>
       )
         
@@ -117,11 +146,12 @@ function App() {
     <div classname ="task-page">
       <h1>To Do List</h1>
       <h2>Current Tasks</h2>
-      <DisplayTasks/>
+      <DisplayCurrentTasks/>
       <h2>Add Task</h2>
       <NewTaskBox/>
       <button type="button" id="button" onClick={SaveNewTask}>Save</button>
       <h2>Completed Tasks</h2>
+      <DisplayCompletedTasks/>
     </div>
   )
 }

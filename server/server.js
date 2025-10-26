@@ -9,7 +9,19 @@ app.get("/api/get-current-tasks", async (req, res) => {
     try {
         const db = await initDB();
         const tasks = await db.all('SELECT * FROM tasks WHERE completed = 0');
-        console.log("Sending all tasks.");
+        console.log("Sending all current tasks.");
+        res.json(tasks);
+    } catch (error) {
+        console.log("Error getting tasks: " + error);
+        res.json("INVALID");
+    }
+});
+
+app.get("/api/get-completed-tasks", async (req, res) => {
+    try {
+        const db = await initDB();
+        const tasks = await db.all('SELECT * FROM tasks WHERE completed = 1');
+        console.log("Sending all completed tasks.");
         res.json(tasks);
     } catch (error) {
         console.log("Error getting tasks: " + error);
