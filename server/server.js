@@ -8,7 +8,7 @@ app.use(express.json());
 app.get("/api/get-current-tasks", async (req, res) => {
     try {
         const db = await initDB();
-        const tasks = await db.all('SELECT * FROM tasks');
+        const tasks = await db.all('SELECT * FROM tasks WHERE completed = 0');
         console.log("Sending all tasks.");
         res.json(tasks);
     } catch (error) {
@@ -35,7 +35,8 @@ app.post("/api/completed-task", async (req, res) => {
     try {
        const data = req.body.data;
         const db = await initDB();
-        await db.run("UPDATE tasks SET completed = 1 WHERE id = ?", [data.id]);
+        console.log(data);
+        await db.run("UPDATE tasks SET completed = 1 WHERE id = ?", [data]);
         console.log("Task completed.")
         res.json("VALID"); 
     } catch (error) {
