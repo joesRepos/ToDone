@@ -44,6 +44,7 @@ function App() {
           <p key={currentTask.id}>{JSON.stringify(currentTask.task)}</p>
           <p key={currentTask.id}>Priority: {JSON.stringify(currentTask.priority)}</p>
           <button type="button" id="button" onClick={() => CompleteTask(currentTask.id)}>Completed</button>
+          <button type="button" id="button" onClick={() => ToggleUpdateTask(currentTask.id)}>Edit</button>
         </div>
       )
         
@@ -81,6 +82,10 @@ function App() {
         console.log("error completing task.");
       }
     });
+  }
+
+  function ToggleUpdateTask(task) {
+    console.log("Task to be updated: " + task);
   }
 
   function DisplayPriorities() {
@@ -143,7 +148,7 @@ function App() {
   }
 
   return (
-    <div classname ="task-page">
+    <div className ="task-page">
       <h1>To Do List</h1>
       <h2>Current Tasks</h2>
       <DisplayCurrentTasks/>
