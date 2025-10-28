@@ -41,12 +41,11 @@ function App() {
     let rows = [];
     for (let currentTask of currentTasksData) {
       if (editTaskID === currentTask.id) {
-        console.log(JSON.stringify(currentTask.due_date));
         rows.push(
         <div>
           <input type="text" id = "UpdateTask" defaultValue={currentTask.task} required/>
            <select id="UpdatePriority" name="UpdatePriority">
-                <option value={JSON.stringify(currentTask.priority)}>{JSON.stringify(currentTask.priority)}</option>
+                <option value={currentTask.priority}>{currentTask.priority}</option>
                 <DisplayPriorities/>
             </select>
             <input type="date" id="UpdateDue" value={currentTask.due_date} required />
@@ -54,11 +53,11 @@ function App() {
         </div>
         )
         
-      } else {
+      } else if (currentTask.id != undefined) {
         rows.push(
         <div>
-          <p key={currentTask.id}>{JSON.stringify(currentTask.task)}</p>
-          <p key={currentTask.id}>Priority: {JSON.stringify(currentTask.priority)}</p>
+          <p key={currentTask.id}>{currentTask.task}</p>
+          <p key={currentTask.id}>Priority: {currentTask.priority}</p>
           <button type="button" id="button" onClick={() => CompleteTask(currentTask.id)}>Completed</button>
           <button type="button" id="button" onClick={() => setEditTaskID(currentTask.id)}>Edit</button>
         </div>
@@ -75,7 +74,7 @@ function App() {
     for (let completedTask of completedTasksData) {
       rows.push(
         <div>
-          <p key={completedTask.id}>{JSON.stringify(completedTask.task)}</p>
+          <p key={completedTask.id}>{completedTask.task}</p>
         </div>
       )
         
