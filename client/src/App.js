@@ -4,6 +4,7 @@ function App() {
 
   const [currentTasksData, setCurrentTasksData] = useState([{}]);
   const [completedTasksData, setCompletedTasksData] = useState([{}]);
+  const [editTaskID, setEditTaskID] = useState([{}]);
   const MAX_PRIORITY = 5;
 
   useEffect(() => {
@@ -39,14 +40,31 @@ function App() {
   function DisplayCurrentTasks() {
     let rows = [];
     for (let currentTask of currentTasksData) {
-      rows.push(
+      if (editTaskID === currentTask.id) {
+        console.log(JSON.stringify(currentTask.due_date));
+        rows.push(
+        <div>
+          <input type="text" id = "UpdateTask" defaultValue={currentTask.task} required/>
+           <select id="UpdatePriority" name="UpdatePriority">
+                <option value={JSON.stringify(currentTask.priority)}>{JSON.stringify(currentTask.priority)}</option>
+                <DisplayPriorities/>
+            </select>
+            <input type="date" id="UpdateDue" value={currentTask.due_date} required />
+            <button type="button" id="button" onClick={() => UpdateTask(currentTask.id)}>Save</button>
+        </div>
+        )
+        
+      } else {
+        rows.push(
         <div>
           <p key={currentTask.id}>{JSON.stringify(currentTask.task)}</p>
           <p key={currentTask.id}>Priority: {JSON.stringify(currentTask.priority)}</p>
           <button type="button" id="button" onClick={() => CompleteTask(currentTask.id)}>Completed</button>
-          <button type="button" id="button" onClick={() => ToggleUpdateTask(currentTask.id)}>Edit</button>
+          <button type="button" id="button" onClick={() => setEditTaskID(currentTask.id)}>Edit</button>
         </div>
-      )
+        )
+      }
+      
         
     }
     return rows;
@@ -84,8 +102,29 @@ function App() {
     });
   }
 
-  function ToggleUpdateTask(task) {
-    console.log("Task to be updated: " + task);
+  function UpdateTask(task) {
+    fetch("api/update-task", {
+      method:'POST',
+      body: JSON.stringify({
+        task: document.getElementById("UpdateTask").value,
+        priority: document.getElementById("UpdatePriority").value,
+        due_date: document.getElementById("UpdateDue").value,
+        id: task
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data === "VALID") {
+        window.location.reload();
+      }
+
+      else if (data === "INVALID") {
+        console.log("Error editing task.")
+      }
+    });
   }
 
   function DisplayPriorities() {
@@ -115,13 +154,6 @@ function App() {
   }
 
   function SaveNewTask() {
-    let newTaskData = [];
-    console.log("New Task Saved.");
-
-    newTaskData.push(document.getElementById("NewTask").value);
-    newTaskData.push(document.getElementById("NewPriority").value);
-    newTaskData.push(document.getElementById("NewDue").value);
-    console.log(newTaskData);
 
     fetch("api/save-new-task", {
       method:'POST',

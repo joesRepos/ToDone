@@ -58,7 +58,7 @@ app.post("/api/completed-task", async (req, res) => {
 
 app.post("/api/update-task", async (req, res) => {
     try {
-       const { task, priority, due_date } = req.body;
+       const { task, priority, due_date, id } = req.body;
         const db = await initDB();
         await db.run("UPDATE tasks SET task = ?, priority = ?, due_date = ? WHERE id = ?", [task, priority, due_date, id]);
         console.log("Task updated.")
