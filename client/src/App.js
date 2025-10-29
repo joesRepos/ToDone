@@ -53,11 +53,15 @@ function App() {
         </div>
         )
         
-      } else if (currentTask.id != undefined) {
+      } else if (currentTask.id !== undefined) {
         rows.push(
         <div>
           <p key={currentTask.id}>{currentTask.task}</p>
           <p key={currentTask.id}>Priority: {currentTask.priority}</p>
+          <p>Status: </p>
+          <input type="text" id = {"status" + currentTask.id} defaultValue={currentTask.status} required/>
+          <button type="button" id={"status" + currentTask.id} onClick={() => UpdateStatus(currentTask.id)}>Update</button>
+          <p></p>
           <button type="button" id="button" onClick={() => CompleteTask(currentTask.id)}>Completed</button>
           <button type="button" id="button" onClick={() => setEditTaskID(currentTask.id)}>Edit</button>
         </div>
@@ -97,6 +101,30 @@ function App() {
       }
       else if(data === "INVALID") {
         console.log("error completing task.");
+      }
+    });
+  }
+
+  function UpdateStatus(task) {
+    console.log(document.getElementById("status" + task).value);
+    fetch("api/update-task-status", {
+      method:'POST',
+      body: JSON.stringify({
+        status: document.getElementById("status" + task).value,
+        id: task
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data === "VALID") {
+        window.location.reload();
+      }
+
+      else if (data === "INVALID") {
+        console.log("Error updating task status.")
       }
     });
   }

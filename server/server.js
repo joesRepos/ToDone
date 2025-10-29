@@ -58,10 +58,23 @@ app.post("/api/completed-task", async (req, res) => {
 
 app.post("/api/update-task", async (req, res) => {
     try {
-       const { task, priority, due_date, id } = req.body;
+        const { task, priority, due_date, id } = req.body;
         const db = await initDB();
         await db.run("UPDATE tasks SET task = ?, priority = ?, due_date = ? WHERE id = ?", [task, priority, due_date, id]);
         console.log("Task updated.")
+        res.json("VALID"); 
+    } catch (error) {
+        console.log("Error completing task: " + error);
+        res.json("INVALID");
+    }
+});
+
+app.post("/api/update-task-status", async (req, res) => {
+    try {
+        const { status, id } = req.body;
+        const db = await initDB();
+        await db.run("UPDATE tasks SET status = ? WHERE id = ?", [status, id]);
+        console.log("Status updated.")
         res.json("VALID"); 
     } catch (error) {
         console.log("Error completing task: " + error);
