@@ -18,7 +18,8 @@ const setup = async () => {
       task TEXT NOT NULL,
       priority INTEGER DEFAULT 1,
       completed BOOLEAN DEFAULT 0,
-      due_date TEXT
+      due_date TEXT,
+      status TEXT
     );
   `);
 
