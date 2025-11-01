@@ -18,7 +18,8 @@ function App() {
         .then(response => response.json())
         .then(data => {
             if (data !== "INVALID") {
-              setCurrentTasksData(data);
+              const sorted = data.sort((a, b) => a.priority - b.priority);
+              setCurrentTasksData(sorted);
             }
         })
   }, [])
@@ -68,6 +69,8 @@ function App() {
         </div>
         )
       }
+
+
       
         
     }
@@ -125,7 +128,7 @@ function App() {
       }
 
       else if (data === "INVALID") {
-        console.log("Error updating task status.")
+        console.log("Error updating task status.");
       }
     });
   }
