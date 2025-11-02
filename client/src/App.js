@@ -105,6 +105,7 @@ function App() {
       }
       else if(data === "INVALID") {
         console.log("error completing task.");
+        alert("Could not complete task.");
       }
     });
   }
@@ -129,6 +130,7 @@ function App() {
 
       else if (data === "INVALID") {
         console.log("Error updating task status.");
+        alert("Could not update task status.");
       }
     });
   }
@@ -153,7 +155,8 @@ function App() {
       }
 
       else if (data === "INVALID") {
-        console.log("Error editing task.")
+        console.log("Error editing task.");
+        alert("Could not update task.");
       }
     });
   }
@@ -204,7 +207,8 @@ function App() {
       }
 
       else if (data === "INVALID") {
-        console.log("Error saving new task.")
+        console.log("Error saving new task.");
+        alert("Could not save new task.");
       }
     });
 
