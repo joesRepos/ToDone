@@ -58,8 +58,8 @@ function App() {
       } else if (currentTask.id !== undefined) {
         rows.push(
         <div>
-          <p key={currentTask.id}>{currentTask.task}</p>
-          <p key={currentTask.id}>Priority: {currentTask.priority}</p>
+          <p key={currentTask.id + "-task"}>{currentTask.task}</p>
+          <p key={currentTask.id + "-priority"}>Priority: {currentTask.priority}</p>
           <p>Status: </p>
           <input type="text" id = {"status" + currentTask.id} defaultValue={currentTask.status} required/>
           <button type="button" id={"status" + currentTask.id} onClick={() => UpdateStatus(currentTask.id)}>Update</button>
@@ -82,7 +82,7 @@ function App() {
     for (let completedTask of completedTasksData) {
       rows.push(
         <div>
-          <p key={completedTask.id}>{completedTask.task}</p>
+          <p key={completedTask.id + "-completed"}>{completedTask.task}</p>
         </div>
       )
         
