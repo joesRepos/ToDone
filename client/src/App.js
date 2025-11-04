@@ -152,6 +152,7 @@ function App() {
     .then(data => {
       if (data === "VALID") {
         window.location.reload();
+        alert("Task updated successfully.");
       }
 
       else if (data === "INVALID") {
@@ -204,6 +205,7 @@ function App() {
     .then(data => {
       if (data === "VALID") {
         window.location.reload();
+        alert("New task saved succssfully.");
       }
 
       else if (data === "INVALID") {
