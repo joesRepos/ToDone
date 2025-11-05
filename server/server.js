@@ -5,9 +5,11 @@ const app = express();
 
 app.use(express.json());
 
+const dbPromise = initDB();
+
 app.get("/api/get-current-tasks", async (req, res) => {
     try {
-        const db = await initDB();
+        const db = await dbPromise;
         const tasks = await db.all('SELECT * FROM tasks WHERE completed = 0');
         console.log("Sending all current tasks.");
         res.json(tasks);
@@ -19,7 +21,7 @@ app.get("/api/get-current-tasks", async (req, res) => {
 
 app.get("/api/get-completed-tasks", async (req, res) => {
     try {
-        const db = await initDB();
+        const db = await dbPromise;
         const tasks = await db.all('SELECT * FROM tasks WHERE completed = 1');
         console.log("Sending all completed tasks.");
         res.json(tasks);
@@ -31,7 +33,7 @@ app.get("/api/get-completed-tasks", async (req, res) => {
 
 app.post("/api/save-new-task", async (req, res) => {
     try {
-        const db = await initDB();
+        const db = await dbPromise;
         const { task, priority, due_date } = req.body;
         await db.run('INSERT INTO tasks (task, priority, due_date) VALUES (?, ?, ?)', [task, priority,due_date]);
         console.log("New task saved.")
@@ -46,7 +48,7 @@ app.post("/api/save-new-task", async (req, res) => {
 app.post("/api/completed-task", async (req, res) => {
     try {
        const data = req.body.data;
-        const db = await initDB();
+        const db = await dbPromise;
         await db.run("UPDATE tasks SET completed = 1 WHERE id = ?", [data]);
         console.log("Task completed.")
         res.json("VALID"); 
@@ -59,7 +61,7 @@ app.post("/api/completed-task", async (req, res) => {
 app.post("/api/update-task", async (req, res) => {
     try {
         const { task, priority, due_date, id } = req.body;
-        const db = await initDB();
+        const db = await dbPromise;
         await db.run("UPDATE tasks SET task = ?, priority = ?, due_date = ? WHERE id = ?", [task, priority, due_date, id]);
         console.log("Task updated.")
         res.json("VALID"); 
@@ -72,7 +74,7 @@ app.post("/api/update-task", async (req, res) => {
 app.post("/api/update-task-status", async (req, res) => {
     try {
         const { status, id } = req.body;
-        const db = await initDB();
+        const db = await dbPromise;
         await db.run("UPDATE tasks SET status = ? WHERE id = ?", [status, id]);
         console.log("Status updated.")
         res.json("VALID"); 
