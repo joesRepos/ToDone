@@ -2,10 +2,9 @@ import React, {useEffect, useState} from 'react'
 import './App.css';
 
 function App() { 
-
-  const [currentTasksData, setCurrentTasksData] = useState([{}]);
-  const [completedTasksData, setCompletedTasksData] = useState([{}]);
-  const [editTaskID, setEditTaskID] = useState([{}]);
+const [currentTasksData, setCurrentTasksData] = useState([]);
+const [completedTasksData, setCompletedTasksData] = useState([]);
+const [editTaskID, setEditTaskID] = useState(null);
   const MAX_PRIORITY = 5;
 
   useEffect(() => {
