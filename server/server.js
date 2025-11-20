@@ -7,6 +7,7 @@ app.use(express.json());
 
 const dbPromise = initDB();
 
+// Returns the uncompleted task data from the database.
 app.get("/api/get-current-tasks", async (req, res) => {
     try {
         const db = await dbPromise;
@@ -19,6 +20,7 @@ app.get("/api/get-current-tasks", async (req, res) => {
     }
 });
 
+// Returns the completed task data from the database.
 app.get("/api/get-completed-tasks", async (req, res) => {
     try {
         const db = await dbPromise;
@@ -31,6 +33,7 @@ app.get("/api/get-completed-tasks", async (req, res) => {
     }
 });
 
+// Inserts a new task into the database based on the data sent from the client.
 app.post("/api/save-new-task", async (req, res) => {
     try {
         const db = await dbPromise;
@@ -45,6 +48,7 @@ app.post("/api/save-new-task", async (req, res) => {
     
 });
 
+// Updates a specified task to completed /
 app.post("/api/completed-task", async (req, res) => {
     try {
        const data = req.body.data;
@@ -58,6 +62,7 @@ app.post("/api/completed-task", async (req, res) => {
     }
 });
 
+//  Updates a task data with the data sent from the lient.
 app.post("/api/update-task", async (req, res) => {
     try {
         const { task, priority, due_date, id } = req.body;
@@ -71,6 +76,7 @@ app.post("/api/update-task", async (req, res) => {
     }
 });
 
+// Updates the status of a task from the client.
 app.post("/api/update-task-status", async (req, res) => {
     try {
         const { status, id } = req.body;
