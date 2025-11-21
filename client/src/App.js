@@ -6,7 +6,8 @@ const [currentTasksData, setCurrentTasksData] = useState([]);
 const [completedTasksData, setCompletedTasksData] = useState([]);
 const [editTaskID, setEditTaskID] = useState(null);
   const MAX_PRIORITY = 5;
-
+   
+  // Loads in the data by quierying the database.
   useEffect(() => {
     fetch("/api/get-current-tasks", {
             method: 'GET',
@@ -22,7 +23,6 @@ const [editTaskID, setEditTaskID] = useState(null);
             }
         })
   }, [])
-
     useEffect(() => {
     fetch("/api/get-completed-tasks", {
             method: 'GET',
@@ -38,6 +38,7 @@ const [editTaskID, setEditTaskID] = useState(null);
         })
   }, [])
 
+  // Constructs the HTML for displaying the current tasks.
   function DisplayCurrentTasks() {
     let rows = [];
     for (let currentTask of currentTasksData) {
@@ -76,6 +77,7 @@ const [editTaskID, setEditTaskID] = useState(null);
     return rows;
   }
 
+    // Constructs the HTML for displaying the completed tasks.
     function DisplayCompletedTasks() {
     let rows = [];
     for (let completedTask of completedTasksData) {
@@ -89,6 +91,7 @@ const [editTaskID, setEditTaskID] = useState(null);
     return rows;
   }
   
+  // Marks a task as completed by sending it to the server.
   function CompleteTask(task) {
     fetch("api/completed-task", {
       method:'POST',
@@ -109,6 +112,7 @@ const [editTaskID, setEditTaskID] = useState(null);
     });
   }
 
+  // Updates the status of a task by sending the new data to the server.
   function UpdateStatus(task) {
     console.log(document.getElementById("status" + task).value);
     fetch("api/update-task-status", {
@@ -134,6 +138,7 @@ const [editTaskID, setEditTaskID] = useState(null);
     });
   }
 
+  // Updates tasks by sending the new data to the server.
   function UpdateTask(task) {
     fetch("api/update-task", {
       method:'POST',
@@ -161,6 +166,7 @@ const [editTaskID, setEditTaskID] = useState(null);
     });
   }
 
+  // Constructs the HTML for displaying the priority options 
   function DisplayPriorities() {
     let rows = [];
     for (let i = 0; i < MAX_PRIORITY; i++) {
@@ -170,6 +176,7 @@ const [editTaskID, setEditTaskID] = useState(null);
     return rows;
   }
 
+  // Constructs the HTML for the new task form.
   function NewTaskBox() {
     let rows = [];
     rows.push(<div>
@@ -187,6 +194,7 @@ const [editTaskID, setEditTaskID] = useState(null);
     return rows;
   }
 
+  // Creates a new task by sending the data to the server.
   function SaveNewTask() {
 
     fetch("api/save-new-task", {
@@ -215,6 +223,7 @@ const [editTaskID, setEditTaskID] = useState(null);
 
   }
 
+  // Returns the HTML for the web page.
   return (
     <div className ="task-page">
       <h1>To Do List</h1>
